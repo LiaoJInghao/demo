@@ -35,9 +35,8 @@ public class LeaveService implements ILeaveService {
 	@Autowired 
 	private IWorkflowService workflowService;
 	
-	private String depreason;
-	private String hrreason;
 	
+	LeaveDTO leaveDTO = new LeaveDTO();
 	/*----------------------------------------------系统业务--------------------------------------------*/
 	@Override
 	public void save(Leave leave) {
@@ -125,15 +124,10 @@ public class LeaveService implements ILeaveService {
 	            
 	            if(leave!=null){
 	            	
-	            	LeaveDTO leaveDTO = new LeaveDTO();
 	            	
 	            	
-	            	if(leaveDTO.getDepreason()==null) {
-	            		leaveDTO.setDepreason(depreason);
-	            	}
-	            	if(leaveDTO.getHrreason()==null) {
-	            		leaveDTO.setHrreason(hrreason);
-	            	}
+	            	
+	            
 	            	
 	            	/*leave.setDepReason(depreason);
 	            	leave.setHrReason(hrreason);*/
@@ -167,6 +161,8 @@ public class LeaveService implements ILeaveService {
      * @return
      */
 	public void complete(String taskId, Map<String, Object> variables) {
+		String depreason = null;
+		String hrreason = null;
 		for(String key : variables.keySet()){
 			if(variables.containsKey("deptLeaderPass")&&(boolean) variables.get("deptLeaderPass")) {
 				depreason="同意";
@@ -181,16 +177,17 @@ public class LeaveService implements ILeaveService {
 				hrreason=(String) variables.get("hrBackReason");
 			}
 		 }
-		
-		System.out.println("complete"+depreason);
-		System.out.println("complete"+hrreason);
+		if(leaveDTO.getDepreason()==null) {
+    		leaveDTO.setDepreason(depreason);
+    	}
+    	if(leaveDTO.getHrreason()==null) {
+    		leaveDTO.setHrreason(hrreason);
+    	}
+		/*System.out.println("complete"+depreason);
+		System.out.println("complete"+hrreason);*/
 		
 		workflowService.complete(taskId, variables);
 	}
 	
-	public void back() {
-		depreason=null;
-		hrreason=null;
-	}
 	
 }
