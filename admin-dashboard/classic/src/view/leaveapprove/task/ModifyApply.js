@@ -16,17 +16,6 @@ Ext.define('Admin.view.leaveapprove.task.ModifyApply', {
         msgTarget: 'none',
         invalidCls: '' 
     },
-    listeners:{
-            /*render:function(){
-            	var val=Ext.getCmp('hrreasonModify').getValue();
-            	Ext.get('hrreasonModify').hide();
-            	alert("ssdf"+val);
-
-            	var val=Ext.getCmp('sss').getValue();
-            	alert("ssd"+val);
-            	
-            }*/
-    },
     items: [{
 		xtype: 'radiogroup',
 		fieldLabel: '重新申请',
@@ -50,7 +39,6 @@ Ext.define('Admin.view.leaveapprove.task.ModifyApply', {
 		xtype: 'combobox',
 		name: 'leaveType',
 		fieldLabel: '请假类型',
-		//vtype: 'email',
 		store: Ext.create('Ext.data.Store', {
 			fields: ['value', 'name'],
 			data : [
@@ -76,40 +64,40 @@ Ext.define('Admin.view.leaveapprove.task.ModifyApply', {
 	},{
 		xtype : 'textareafield',
 		grow: true,
-		id:'sss',
 		name: 'reason',
 		fieldLabel: '请假原因',
 		anchor: '100%'
-		
-		
 	},{
         xtype: 'textareafield',
-        id:'depreasonModify',
+        //id:'depreasonModify',
         name: 'depreason',//修改
         fieldLabel: '部门经理审批意见',
-        listeners:{
+        emptyText: '部门经理还未审批',
+        readOnly: true 
+        /*listeners:{
         	change:function(){
         		var val=Ext.getCmp('depreasonModify').getValue();
         		if(val!=null){
         			Ext.get('hrreasonModify').hide();
         		}
         	}
-        }
+        }*/
     },{
         xtype: 'textareafield',
-        id:'hrreasonModify',
+        //id:'hrreasonModify',
         name: 'hrreason',//修改
         fieldLabel: '人事文员审批意见',
-        listeners:{
+        emptyText: '人事文员还未审批',
+        readOnly: true
+        /*listeners:{
         	change:function(){
         		var val=Ext.getCmp('hrreasonModify').getValue();
         		if(val!=null){
         			Ext.get('depreasonModify').hide();
         			Ext.get('hrreasonModify').setVisible(true);   
-        			//Ext.get('hrreasonModify').show();
         		}
         	}
-        }
+        }*/
     }],
 
    	bbar: [{

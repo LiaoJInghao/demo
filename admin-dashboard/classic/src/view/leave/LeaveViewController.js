@@ -48,7 +48,13 @@
 		var values  =form.getValues();//获取form数据
 		record.set(values);
 		record.save();
-		Ext.data.StoreManager.lookup('leaveStroe').load();
+		var store=Ext.data.StoreManager.lookup('leaveStroe');
+		
+		/*store.addListener('load', function() {
+       		alert("ssss");
+		});*/
+
+		store.load();
 		win.close();
 	},
 	/*Edit Submit*/	

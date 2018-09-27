@@ -44,13 +44,6 @@ public class ReportBackEndProcessor implements TaskListener
         Object realityEndTime = delegateTask.getVariable("realityEndTime");
         leave.setRealityEndTime((Date) realityEndTime);
         
-        Object depReason = delegateTask.getVariable("depreason");
-        leave.setDepReason((String) depReason);
-        
-        Object hrReason = delegateTask.getVariable("hrreason");
-        leave.setHrReason((String) hrReason);
-      
-      
         leave.setProcessStatus(ProcessStatus.COMPLETE);
         //leaveService.save(leave);
     }

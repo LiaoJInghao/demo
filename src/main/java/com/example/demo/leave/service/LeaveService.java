@@ -35,9 +35,8 @@ public class LeaveService implements ILeaveService {
 	@Autowired 
 	private IWorkflowService workflowService;
 	
-	private String depreason="";
-	
-	private String hrreason="";
+	private String depreason;
+	private String hrreason;
 	
 	/*----------------------------------------------系统业务--------------------------------------------*/
 	@Override
@@ -123,11 +122,21 @@ public class LeaveService implements ILeaveService {
 	                continue;
 	            }
 	            Leave leave = leaveRepository.findById(businessKey).get();
+	            
 	            if(leave!=null){
+	            	
 	            	LeaveDTO leaveDTO = new LeaveDTO();
 	            	
-	            	leaveDTO.setDepreason(depreason);
-	            	leaveDTO.setHrreason(hrreason);
+	            	
+	            	if(leaveDTO.getDepreason()==null) {
+	            		leaveDTO.setDepreason(depreason);
+	            	}
+	            	if(leaveDTO.getHrreason()==null) {
+	            		leaveDTO.setHrreason(hrreason);
+	            	}
+	            	
+	            	/*leave.setDepReason(depreason);
+	            	leave.setHrReason(hrreason);*/
 	            	
 	            	BeanUtils.copyProperties(leave, leaveDTO);
 	            	BeanUtils.copyProperties(workflow, leaveDTO);
@@ -135,6 +144,7 @@ public class LeaveService implements ILeaveService {
 	            }
 	        }
 		}
+		
 		return new PageImpl<LeaveDTO> (results, pageable, null!=results?results.size():0);
 	}
 
@@ -157,7 +167,6 @@ public class LeaveService implements ILeaveService {
      * @return
      */
 	public void complete(String taskId, Map<String, Object> variables) {
-		
 		for(String key : variables.keySet()){
 			if(variables.containsKey("deptLeaderPass")&&(boolean) variables.get("deptLeaderPass")) {
 				depreason="同意";
@@ -172,6 +181,16 @@ public class LeaveService implements ILeaveService {
 				hrreason=(String) variables.get("hrBackReason");
 			}
 		 }
+		
+		System.out.println("complete"+depreason);
+		System.out.println("complete"+hrreason);
+		
 		workflowService.complete(taskId, variables);
 	}
+	
+	public void back() {
+		depreason=null;
+		hrreason=null;
+	}
+	
 }

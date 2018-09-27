@@ -20,7 +20,7 @@ Ext.define('Admin.view.leaveapprove.task.ReportBack', {
     	xtype: 'textfield',
 		name: 'taskId',
 		fieldLabel: '任务ID',
-       // hidden: true,
+		hidden: true,
         readOnly: true
 	},{
 		xtype: 'datefield',
@@ -32,18 +32,6 @@ Ext.define('Admin.view.leaveapprove.task.ReportBack', {
 		fieldLabel: '实际结束时间',
 		format: 'Y/m/d H:i:s', 
 		name: 'realityEndTime'
-	},{
-    	xtype: 'textfield',
-		name: 'depreason',
-		fieldLabel: '部门经理审批意见',
-        //hidden: true,
-        //readOnly: true
-	},{
-    	xtype: 'textfield',
-		name: 'hrreason',
-		fieldLabel: '人事文员审批意见',
-        //hidden: true,
-        //readOnly: true
 	}],
    	bbar: [{
 		xtype: 'button',

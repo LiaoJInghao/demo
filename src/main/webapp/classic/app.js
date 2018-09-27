@@ -85541,7 +85541,8 @@ Ext.define('Admin.view.leave.LeaveViewController', {extend:Ext.app.ViewControlle
   var values = form.getValues();
   record.set(values);
   record.save();
-  Ext.data.StoreManager.lookup('leaveStroe').load();
+  var store = Ext.data.StoreManager.lookup('leaveStroe');
+  store.load();
   win.close();
 }, submitEditForm:function(btn) {
   var win = btn.up('window');
@@ -85803,27 +85804,16 @@ name:'startTime', fieldLabel:'开始时间', format:'Y/m/d H:i:s', readOnly:true
     win.close();
   }
 }}]});
-Ext.define('Admin.view.leaveapprove.task.ModifyApply', {extend:Ext.form.Panel, alias:'widget.modifyApply', bodyPadding:5, bodyBorder:true, defaults:{anchor:'100%'}, fieldDefaults:{labelAlign:'left', msgTarget:'none', invalidCls:''}, listeners:{}, items:[{xtype:'radiogroup', fieldLabel:'重新申请', items:[{name:'reApply', inputValue:true, boxLabel:'是', checked:true}, {name:'reApply', inputValue:false, boxLabel:'否'}]}, {xtype:'textfield', name:'taskId', fieldLabel:'任务ID', hidden:true, readOnly:true}, {xtype:'combobox', 
-name:'leaveType', fieldLabel:'请假类型', store:Ext.create('Ext.data.Store', {fields:['value', 'name'], data:[{'value':'A', 'name':'带薪假期'}, {'value':'B', 'name':'无薪假期'}, {'value':'C', 'name':'病假'}]}), queryMode:'local', displayField:'name', valueField:'value', allowBlank:false}, {xtype:'datefield', fieldLabel:'请假开始时间', format:'Y/m/d H:i:s', name:'startTime'}, {xtype:'datefield', fieldLabel:'请假结束时间', format:'Y/m/d H:i:s', name:'endTime'}, {xtype:'textareafield', grow:true, id:'sss', name:'reason', fieldLabel:'请假原因', 
-anchor:'100%'}, {xtype:'textareafield', id:'depreasonModify', name:'depreason', fieldLabel:'部门经理审批意见', listeners:{change:function() {
-  var val = Ext.getCmp('depreasonModify').getValue();
-  if (val != null) {
-    Ext.get('hrreasonModify').hide();
-  }
-}}}, {xtype:'textareafield', id:'hrreasonModify', name:'hrreason', fieldLabel:'人事文员审批意见', listeners:{change:function() {
-  var val = Ext.getCmp('hrreasonModify').getValue();
-  if (val != null) {
-    Ext.get('depreasonModify').hide();
-    Ext.get('hrreasonModify').setVisible(true);
-  }
-}}}], bbar:[{xtype:'button', ui:'soft-green', text:'提交', handler:'onClickModifyApplyFormSubmitButton'}, {xtype:'button', ui:'gray', text:'取消', handler:function(btn) {
+Ext.define('Admin.view.leaveapprove.task.ModifyApply', {extend:Ext.form.Panel, alias:'widget.modifyApply', bodyPadding:5, bodyBorder:true, defaults:{anchor:'100%'}, fieldDefaults:{labelAlign:'left', msgTarget:'none', invalidCls:''}, items:[{xtype:'radiogroup', fieldLabel:'重新申请', items:[{name:'reApply', inputValue:true, boxLabel:'是', checked:true}, {name:'reApply', inputValue:false, boxLabel:'否'}]}, {xtype:'textfield', name:'taskId', fieldLabel:'任务ID', hidden:true, readOnly:true}, {xtype:'combobox', 
+name:'leaveType', fieldLabel:'请假类型', store:Ext.create('Ext.data.Store', {fields:['value', 'name'], data:[{'value':'A', 'name':'带薪假期'}, {'value':'B', 'name':'无薪假期'}, {'value':'C', 'name':'病假'}]}), queryMode:'local', displayField:'name', valueField:'value', allowBlank:false}, {xtype:'datefield', fieldLabel:'请假开始时间', format:'Y/m/d H:i:s', name:'startTime'}, {xtype:'datefield', fieldLabel:'请假结束时间', format:'Y/m/d H:i:s', name:'endTime'}, {xtype:'textareafield', grow:true, name:'reason', fieldLabel:'请假原因', 
+anchor:'100%'}, {xtype:'textareafield', name:'depreason', fieldLabel:'部门经理审批意见', emptyText:'部门经理还未审批', readOnly:true}, {xtype:'textareafield', name:'hrreason', fieldLabel:'人事文员审批意见', emptyText:'人事文员还未审批', readOnly:true}], bbar:[{xtype:'button', ui:'soft-green', text:'提交', handler:'onClickModifyApplyFormSubmitButton'}, {xtype:'button', ui:'gray', text:'取消', handler:function(btn) {
   var win = btn.up('window');
   if (win) {
     win.close();
   }
 }}]});
-Ext.define('Admin.view.leaveapprove.task.ReportBack', {extend:Ext.form.Panel, alias:'widget.reportBack', bodyPadding:10, bodyBorder:true, defaults:{anchor:'100%'}, fieldDefaults:{labelAlign:'left', msgTarget:'none', invalidCls:''}, items:[{xtype:'textfield', name:'taskId', fieldLabel:'任务ID', readOnly:true}, {xtype:'datefield', fieldLabel:'实际开始时间', format:'Y/m/d H:i:s', name:'realityStartTime'}, {xtype:'datefield', fieldLabel:'实际结束时间', format:'Y/m/d H:i:s', name:'realityEndTime'}, {xtype:'textfield', 
-name:'depreason', fieldLabel:'部门经理审批意见', readOnly:true}, {xtype:'textfield', name:'hrreason', fieldLabel:'人事文员审批意见', readOnly:true}], bbar:[{xtype:'button', ui:'soft-green', text:'提交', handler:'onClickReportBackFormSubmitButton'}, {xtype:'button', ui:'gray', text:'取消', handler:function(btn) {
+Ext.define('Admin.view.leaveapprove.task.ReportBack', {extend:Ext.form.Panel, alias:'widget.reportBack', bodyPadding:10, bodyBorder:true, defaults:{anchor:'100%'}, fieldDefaults:{labelAlign:'left', msgTarget:'none', invalidCls:''}, items:[{xtype:'textfield', name:'taskId', fieldLabel:'任务ID', hidden:true, readOnly:true}, {xtype:'datefield', fieldLabel:'实际开始时间', format:'Y/m/d H:i:s', name:'realityStartTime'}, {xtype:'datefield', fieldLabel:'实际结束时间', format:'Y/m/d H:i:s', name:'realityEndTime'}], bbar:[{xtype:'button', 
+ui:'soft-green', text:'提交', handler:'onClickReportBackFormSubmitButton'}, {xtype:'button', ui:'gray', text:'取消', handler:function(btn) {
   var win = btn.up('window');
   if (win) {
     win.close();
