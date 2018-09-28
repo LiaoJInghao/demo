@@ -135,19 +135,25 @@
     },
     //销假
     onClickReportBackFormSubmitButton: function(btn) {
+        
     	var form = btn.up('form');
-     	var values = form.getValues();
-     	var url = 'leave/complete/' + values.taskId;
-     	var variables = [{
- 			key: 'realityStartTime',
- 			value: values.realityStartTime,//获取表单选择的value
- 			type: 'D'
- 		},{
- 			key: 'realityEndTime',
- 			value: values.realityEndTime,//获取表单选择的value
- 			type: 'D'
- 		}];
-        this.complete(url,variables,form);
+        if(form.isValid()){
+            var values = form.getValues();
+            var url = 'leave/complete/' + values.taskId;
+            var variables = [{
+                key: 'realityStartTime',
+                value: values.realityStartTime,//获取表单选择的value
+                type: 'D'
+            },{
+                key: 'realityEndTime',
+                value: values.realityEndTime,//获取表单选择的value
+                type: 'D'
+            }];
+            this.complete(url,variables,form);
+        }else{
+            Ext.Msg.alert('提示','不允许为空');
+        }
+     	
     },
     //调整申请
     onClickModifyApplyFormSubmitButton: function(btn) {

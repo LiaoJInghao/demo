@@ -85460,8 +85460,9 @@ anchor:'100%'}], bbar:[{xtype:'button', ui:'soft-green', text:'提交', handler:
 }}]});
 Ext.define('Admin.view.dashboard.Dashboard', {extend:Ext.container.Container, xtype:'admindashboard', controller:'dashboard', viewModel:{type:'dashboard'}, layout:'responsivecolumn', listeners:{hide:'onHideView'}, html:'admindashboard'});
 Ext.define('Admin.view.leave.LeaveAddWindow', {extend:Ext.window.Window, alias:'widget.leaveAddWindow', height:350, minHeight:350, minWidth:300, width:500, scrollable:true, title:'Add Leave Window', closable:true, constrain:true, defaultFocus:'textfield', modal:true, layout:'fit', items:[{xtype:'form', layout:'form', padding:'10px', ariaLabel:'Enter your name', items:[{xtype:'textfield', fieldLabel:'id', name:'id', hidden:true, readOnly:true}, {xtype:'textfield', fieldLabel:'processStatus', name:'processStatus', 
-value:'NEW', hidden:true, readOnly:true}, {xtype:'textfield', name:'userId', fieldLabel:'请假人', allowBlank:false}, {xtype:'combobox', name:'leaveType', fieldLabel:'请假类型', store:Ext.create('Ext.data.Store', {fields:['value', 'name'], data:[{'value':'A', 'name':'带薪假期'}, {'value':'B', 'name':'无薪假期'}, {'value':'C', 'name':'病假'}]}), queryMode:'local', displayField:'name', valueField:'value', allowBlank:false}, {xtype:'datefield', fieldLabel:'请假开始时间', format:'Y/m/d H:i:s', name:'startTime'}, {xtype:'datefield', 
-fieldLabel:'请假结束时间', format:'Y/m/d H:i:s', name:'endTime'}, {xtype:'textareafield', grow:true, name:'reason', fieldLabel:'请假原因', anchor:'100%'}]}], buttons:['-\x3e', {xtype:'button', text:'Submit', handler:'submitAddForm'}, {xtype:'button', text:'Close', handler:function(btn) {
+value:'NEW', hidden:true, readOnly:true}, {xtype:'textfield', name:'userId', fieldLabel:'请假人', allowBlank:false, emptyText:'请填写请假人姓名', blankText:'请填写请假人'}, {xtype:'combobox', name:'leaveType', fieldLabel:'请假类型', store:Ext.create('Ext.data.Store', {fields:['value', 'name'], data:[{'value':'A', 'name':'带薪假期'}, {'value':'B', 'name':'无薪假期'}, {'value':'C', 'name':'病假'}]}), queryMode:'local', displayField:'name', valueField:'value', emptyText:'--------请选择---------', allowBlank:false, blankText:'请选择类型'}, 
+{xtype:'datefield', fieldLabel:'请假开始时间', minValue:new Date, minText:'请选择当前日期后的时间', format:'Y/m/d H:i:s', altFormats:'Y/m/d|Ymd', name:'startTime', emptyText:'--------请选择---------', allowBlank:false, blankText:'请选择开始时间'}, {xtype:'datefield', fieldLabel:'请假结束时间', minValue:new Date, minText:'请选择当前日期后的时间', format:'Y/m/d H:i:s', altFormats:'Y/m/d|Ymd', name:'endTime', emptyText:'--------请选择---------', allowBlank:false, blankText:'请选择结束时间'}, {xtype:'textareafield', grow:true, name:'reason', fieldLabel:'请假原因', 
+anchor:'100%', emptyText:'请填写请假原因', allowBlank:false, blankText:'请填写请假原因'}]}], buttons:['-\x3e', {xtype:'button', text:'Submit', handler:'submitAddForm'}, {xtype:'button', text:'Close', handler:function(btn) {
   btn.up('window').close();
 }}, '-\x3e']});
 Ext.define('Admin.view.leave.LeaveCenterPanel', {extend:Ext.container.Container, xtype:'leaveCenterPanel', controller:'leaveViewController', viewModel:{type:'leaveViewModel'}, layout:'fit', items:[{xtype:'leaveGridPanel'}]});
@@ -85537,13 +85538,17 @@ Ext.define('Admin.view.leave.LeaveViewController', {extend:Ext.app.ViewControlle
 }, submitAddForm:function(btn) {
   var win = btn.up('window');
   var form = win.down('form');
-  var record = Ext.create('Admin.model.leave.LeaveModel');
-  var values = form.getValues();
-  record.set(values);
-  record.save();
-  var store = Ext.data.StoreManager.lookup('leaveStroe');
-  store.load();
-  win.close();
+  if (form.isValid()) {
+    var record = Ext.create('Admin.model.leave.LeaveModel');
+    var values = form.getValues();
+    record.set(values);
+    record.save();
+    var store = Ext.data.StoreManager.lookup('leaveStroe');
+    store.load();
+    win.close();
+  } else {
+    Ext.Msg.alert('提示', '不允许为空');
+  }
 }, submitEditForm:function(btn) {
   var win = btn.up('window');
   var store = Ext.data.StoreManager.lookup('leaveStroe');
@@ -85757,10 +85762,14 @@ Ext.define('Admin.view.leaveapprove.LeaveApproveViewController', {extend:Ext.app
   this.complete(url, variables, form);
 }, onClickReportBackFormSubmitButton:function(btn) {
   var form = btn.up('form');
-  var values = form.getValues();
-  var url = 'leave/complete/' + values.taskId;
-  var variables = [{key:'realityStartTime', value:values.realityStartTime, type:'D'}, {key:'realityEndTime', value:values.realityEndTime, type:'D'}];
-  this.complete(url, variables, form);
+  if (form.isValid()) {
+    var values = form.getValues();
+    var url = 'leave/complete/' + values.taskId;
+    var variables = [{key:'realityStartTime', value:values.realityStartTime, type:'D'}, {key:'realityEndTime', value:values.realityEndTime, type:'D'}];
+    this.complete(url, variables, form);
+  } else {
+    Ext.Msg.alert('提示', '不允许为空');
+  }
 }, onClickModifyApplyFormSubmitButton:function(btn) {
   var form = btn.up('form');
   var values = form.getValues();
@@ -85812,8 +85821,8 @@ anchor:'100%'}, {xtype:'textareafield', name:'depreason', fieldLabel:'部门经�
     win.close();
   }
 }}]});
-Ext.define('Admin.view.leaveapprove.task.ReportBack', {extend:Ext.form.Panel, alias:'widget.reportBack', bodyPadding:10, bodyBorder:true, defaults:{anchor:'100%'}, fieldDefaults:{labelAlign:'left', msgTarget:'none', invalidCls:''}, items:[{xtype:'textfield', name:'taskId', fieldLabel:'任务ID', hidden:true, readOnly:true}, {xtype:'datefield', fieldLabel:'实际开始时间', format:'Y/m/d H:i:s', name:'realityStartTime'}, {xtype:'datefield', fieldLabel:'实际结束时间', format:'Y/m/d H:i:s', name:'realityEndTime'}], bbar:[{xtype:'button', 
-ui:'soft-green', text:'提交', handler:'onClickReportBackFormSubmitButton'}, {xtype:'button', ui:'gray', text:'取消', handler:function(btn) {
+Ext.define('Admin.view.leaveapprove.task.ReportBack', {extend:Ext.form.Panel, alias:'widget.reportBack', bodyPadding:10, bodyBorder:true, defaults:{anchor:'100%'}, fieldDefaults:{labelAlign:'left', msgTarget:'none', invalidCls:''}, items:[{xtype:'textfield', name:'taskId', fieldLabel:'任务ID', hidden:true, readOnly:true}, {xtype:'datefield', fieldLabel:'实际开始时间', format:'Y/m/d H:i:s', name:'realityStartTime', emptyText:'--------请选择---------', allowBlank:false, blankText:'请选择实际开始时间'}, {xtype:'datefield', 
+fieldLabel:'实际结束时间', format:'Y/m/d H:i:s', name:'realityEndTime', emptyText:'--------请选择---------', allowBlank:false, blankText:'请选择实际结束时间'}], bbar:[{xtype:'button', ui:'soft-green', text:'提交', handler:'onClickReportBackFormSubmitButton'}, {xtype:'button', ui:'gray', text:'取消', handler:function(btn) {
   var win = btn.up('window');
   if (win) {
     win.close();

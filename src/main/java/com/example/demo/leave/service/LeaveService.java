@@ -35,9 +35,8 @@ public class LeaveService implements ILeaveService {
 	@Autowired 
 	private IWorkflowService workflowService;
 	
-	StringBuffer depreason=new StringBuffer();
-	StringBuffer hrreason=new StringBuffer();
-	int flag=0;
+	private String depreason=null;
+	private String hrreason=null;
 	/*----------------------------------------------系统业务--------------------------------------------*/
 	@Override
 	public void save(Leave leave) {
@@ -122,27 +121,20 @@ public class LeaveService implements ILeaveService {
 	                continue;
 	            }
 	            Leave leave = leaveRepository.findById(businessKey).get();
-	            
 	            if(leave!=null){
-	            	
 	            	LeaveDTO leaveDTO = new LeaveDTO();
-	            	if(flag==1) {
-	            		leaveDTO.setDepreason(depreason.toString());
-	            	}else {
-	            		flag=0;
-	            		depreason=new StringBuffer();
-	            	}
 	            	
-	            	
+	            	leaveDTO.setDepreason(depreason);
+	            	leaveDTO.setHrreason(hrreason);
+	            	leave.setDepReason(depreason);
+	            	leave.setHrReason(hrreason);
 	            	
 	            	BeanUtils.copyProperties(leave, leaveDTO);
 	            	BeanUtils.copyProperties(workflow, leaveDTO);
 	            	results.add(leaveDTO);
-	            	
 	            }
 	        }
 		}
-		
 		return new PageImpl<LeaveDTO> (results, pageable, null!=results?results.size():0);
 	}
 
@@ -165,29 +157,24 @@ public class LeaveService implements ILeaveService {
      * @return
      */
 	public void complete(String taskId, Map<String, Object> variables) {
-		flag=1;
 		
-		for(String key : variables.keySet()){
-			if(variables.containsKey("deptLeaderPass")&&(boolean) variables.get("deptLeaderPass")) {
-				//depreason="同意";
-				depreason.append("同意");
-			}
-			if(variables.containsKey("hrPass")&&(boolean) variables.get("hrPass")) {
-				//hrreason="同意";
-				hrreason.append("同意");
-			}
-			if(variables.containsKey("deptLeaderBackReason")) {
-				//depreason=(String) variables.get("deptLeaderBackReason");
-				depreason.append((String) variables.get("deptLeaderBackReason"));
-			}
-			if(variables.containsKey("hrBackReason")) {
-				//hrreason=(String) variables.get("hrBackReason");
-				hrreason.append((String) variables.get("hrBackReason"));
-			}
-		 }
-		
-		/*System.out.println("complete"+depreason);
-		System.out.println("complete"+hrreason);*/
+		//流程变量的处理
+		if(variables.containsKey("realityStartTime")) {
+			depreason=null;
+			hrreason=null;
+		}
+		if(variables.containsKey("deptLeaderPass")&&(boolean) variables.get("deptLeaderPass")) {
+			depreason="同意";
+		}
+		if(variables.containsKey("hrPass")&&(boolean) variables.get("hrPass")) {
+			hrreason="同意";
+		}
+		if(variables.containsKey("deptLeaderBackReason")) {
+			depreason=(String) variables.get("deptLeaderBackReason");
+		}
+		if(variables.containsKey("hrBackReason")) {
+			hrreason=(String) variables.get("hrBackReason");
+		}
 		
 		workflowService.complete(taskId, variables);
 	}

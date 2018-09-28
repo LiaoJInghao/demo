@@ -44,18 +44,20 @@
 	submitAddForm:function(btn){
 		var win    = btn.up('window');
 		var form = win.down('form');
-		var record = Ext.create('Admin.model.leave.LeaveModel');
-		var values  =form.getValues();//获取form数据
-		record.set(values);
-		record.save();
-		var store=Ext.data.StoreManager.lookup('leaveStroe');
-		
-		/*store.addListener('load', function() {
-       		alert("ssss");
-		});*/
-
-		store.load();
-		win.close();
+		if(form.isValid()){
+			var record = Ext.create('Admin.model.leave.LeaveModel');
+			var values  =form.getValues();//获取form数据
+			record.set(values);
+			record.save();
+			var store=Ext.data.StoreManager.lookup('leaveStroe');
+			store.load();
+			/*store.addListener('load', function() {
+	       		Ext.Msg.alert('提示','添加成功');
+			});*/
+		    win.close();
+		}else{
+			Ext.Msg.alert('提示','不允许为空');
+		}
 	},
 	/*Edit Submit*/	
 	submitEditForm:function(btn){

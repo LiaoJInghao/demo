@@ -26,12 +26,18 @@ Ext.define('Admin.view.leaveapprove.task.ReportBack', {
 		xtype: 'datefield',
 		fieldLabel: '实际开始时间',
 		format: 'Y/m/d H:i:s', 
-		name: 'realityStartTime'
+		name: 'realityStartTime',
+		emptyText:'--------请选择---------',
+		allowBlank: false,
+		blankText:'请选择实际开始时间'
 	},{
 		xtype: 'datefield',
 		fieldLabel: '实际结束时间',
 		format: 'Y/m/d H:i:s', 
-		name: 'realityEndTime'
+		name: 'realityEndTime',
+		emptyText:'--------请选择---------',
+		allowBlank: false,
+		blankText:'请选择实际结束时间'
 	}],
    	bbar: [{
 		xtype: 'button',

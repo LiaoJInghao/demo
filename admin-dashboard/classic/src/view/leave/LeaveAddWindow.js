@@ -10,6 +10,10 @@
     closable: true,
     constrain: true,
     
+    requires: [
+        'Ext.form.field.*',
+    ],
+    
     defaultFocus: 'textfield',
     modal:true,
     layout: 'fit',
@@ -36,7 +40,9 @@
 			name: 'userId',
 			fieldLabel: '请假人',
 			//value:loginUser,
-			allowBlank: false
+			allowBlank: false,
+            emptyText:'请填写请假人姓名',
+            blankText:'请填写请假人'
 		},{
 			xtype: 'combobox',
 			name: 'leaveType',
@@ -53,23 +59,40 @@
 			queryMode: 'local',
 			displayField: 'name',
 			valueField: 'value',
-			allowBlank: false
+            emptyText:'--------请选择---------',
+			allowBlank: false,
+            blankText:'请选择类型'
 		},{
 			xtype: 'datefield',
 			fieldLabel: '请假开始时间',
+            minValue: new Date(),
+            minText:'请选择当前日期后的时间',
 			format: 'Y/m/d H:i:s', 
-			name: 'startTime'
+            altFormats : "Y/m/d|Ymd",
+			name: 'startTime',
+            emptyText:'--------请选择---------',
+            allowBlank: false,
+            blankText:'请选择开始时间'
 		},{
 			xtype: 'datefield',
 			fieldLabel: '请假结束时间',
-			format: 'Y/m/d H:i:s', 
-			name: 'endTime'
+			minValue: new Date(),
+            minText:'请选择当前日期后的时间',
+            format: 'Y/m/d H:i:s', 
+            altFormats : "Y/m/d|Ymd",
+			name: 'endTime',
+            emptyText:'--------请选择---------',
+            allowBlank: false,
+            blankText:'请选择结束时间'
 		},{
 			xtype     : 'textareafield',
 			grow      : true,
 			name      : 'reason',
 			fieldLabel: '请假原因',
-			anchor    : '100%'
+			anchor    : '100%',
+            emptyText:'请填写请假原因',
+            allowBlank: false,
+            blankText:'请填写请假原因'
 		}]
     }],
 	buttons: ['->',{
