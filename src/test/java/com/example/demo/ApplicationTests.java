@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -24,7 +25,10 @@ public class ApplicationTests
 	@Autowired  
 	private RuntimeService runtimeService;  
 	@Autowired  
-	private TaskService taskService;  
+	private TaskService taskService; 
+	
+	@Autowired  
+	private IdentityService identityService; 
 
 	@Test
 	public void helloProcessInstance() {
@@ -51,5 +55,10 @@ public class ApplicationTests
  
 		task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
 		System.out.println("》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》任务执行完毕,task为："+task);
+	}
+	
+	@Test
+	public void d() {
+		identityService.deleteUser("admin");
 	}
 }
