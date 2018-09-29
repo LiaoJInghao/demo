@@ -57,8 +57,4 @@ public class ApplicationTests
 		System.out.println("》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》任务执行完毕,task为："+task);
 	}
 	
-	@Test
-	public void d() {
-		identityService.deleteUser("admin");
-	}
 }

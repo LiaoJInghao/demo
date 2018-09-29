@@ -1,12 +1,12 @@
-package com.example.demo.myactiviti.repository;
+package com.example.demo.user.repository;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.myactiviti.entity.MyUser;
+import com.example.demo.user.entity.User;
 
 @Repository
-public interface MyUserRepository extends PagingAndSortingRepository<MyUser, Long>,JpaSpecificationExecutor<MyUser>{
+public interface UserRepository extends PagingAndSortingRepository<User, Long>,JpaSpecificationExecutor<User>{
 
 }
