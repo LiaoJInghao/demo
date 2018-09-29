@@ -6,11 +6,14 @@ package com.example.demo;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.ProcessEngines;
+import org.activiti.engine.identity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import org.activiti.engine.IdentityService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -56,5 +59,12 @@ public class CreateProcessEngineTests {
     public void testdefault() throws Exception {
         ProcessEngine engine = ProcessEngines.getDefaultProcessEngine();
         System.out.println(engine);
+    }
+  
+    @Test
+    public void save(final IdentityService identityService) {
+    	User user = identityService.newUser("user");
+    	
+    	identityService.saveUser(user);
     }
 }
