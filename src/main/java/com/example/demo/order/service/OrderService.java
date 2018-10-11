@@ -62,4 +62,16 @@ public class OrderService implements IOrderService {
 		
 	}
 
+	@Override
+	public Page<OrderDTO> findOrderByCompanyName(String companyName, Pageable pageable) {
+		Page<Order> list = orderRepository.findOrderByCompanyName(companyName, pageable);
+		List<OrderDTO> dtoLists = new ArrayList<OrderDTO>();
+		for (Order entity : list.getContent()) {
+			OrderDTO dto = new OrderDTO();
+			OrderDTO.entityToDto(entity, dto);
+			dtoLists.add(dto);
+		}
+		return new PageImpl<OrderDTO>(dtoLists, pageable, list.getTotalElements());
+	}
+
 }

@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.common.web.ExtjsPageRequest;
 import com.example.demo.company.entity.Company;
 import com.example.demo.company.service.ICompanyServie;
+import com.example.demo.factory.entiry.Factory;
+import com.example.demo.factory.service.IFactoryService;
 import com.example.demo.order.entity.Order;
 import com.example.demo.order.entity.OrderQueryDTO;
 import com.example.demo.order.service.IOrderService;
@@ -28,16 +30,30 @@ public class OrderTest {
 	@Autowired
 	private IOrderService orderService;
 	
+	@Autowired
+	private IFactoryService factoryService;
+	
 	@Test
 	public void save() {
+		Factory f=new Factory();
+		f.setFactoryName("DGF");
+		factoryService.save(f);
+		
+		Factory f1=new Factory();
+		f1.setFactoryName("GZF");
+		factoryService.save(f1);
+		
+		
 		Company c=new Company();
 		c.setCompanyAddress("DG");
 		c.setCompanyName("KDG1");
+		c.setFactory(f);
 		companyService.save(c);
 		
 		Company c2=new Company();
 		c2.setCompanyAddress("DG");
 		c2.setCompanyName("KDG2");
+		c2.setFactory(f1);
 		companyService.save(c2);
 		
 		Order o=new Order();

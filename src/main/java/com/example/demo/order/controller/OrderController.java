@@ -24,10 +24,22 @@ public class OrderController {
 	
 	@GetMapping
 	public Page<OrderDTO> find(OrderQueryDTO orderQueryDTO,ExtjsPageRequest pageable) {
-		Company c=new Company();
-		c.setCompanyName("FHT");
-		orderQueryDTO.setCompany(c);
+		
+		orderQueryDTO.setCompanyName("KDG1");
+		orderQueryDTO.setName("admin1");
+		if(orderQueryDTO.getCompanyName()!=null) {
+			System.out.println("yes");
+		}
 		return orderService.findAll(OrderQueryDTO.getWhereClause(orderQueryDTO), pageable.getPageable());
+		
+	}
+	
+	
+	@RequestMapping("/findAll")
+	public Page<OrderDTO> findAll(ExtjsPageRequest pageable) {
+		
+		String companyName="KDG2";
+		return orderService.findOrderByCompanyName(companyName, pageable.getPageable());
 		
 	}
 

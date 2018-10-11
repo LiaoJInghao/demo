@@ -16,5 +16,7 @@ public interface IOrderService {
 	public Optional<Order> findOne(Long id);
 	
 	public Page<OrderDTO> findAll(Specification<Order> spec, Pageable pageable);
+	
+	public Page<OrderDTO> findOrderByCompanyName(String companyName, Pageable pageable);
 
 }

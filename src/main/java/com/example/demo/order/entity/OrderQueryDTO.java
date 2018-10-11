@@ -18,21 +18,21 @@ import org.apache.commons.lang3.StringUtils;
 public class OrderQueryDTO {
 	
 	private String name;
-	private Company company;
+	private String companyName;
+	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
-	public Company getCompany() {
-		return company;
+	public String getCompanyName() {
+		return companyName;
 	}
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
+	
 	@SuppressWarnings({ "serial"})
 	public static Specification<Order> getWhereClause(final OrderQueryDTO orderQueryDTO) {
 		return new Specification<Order>() {
@@ -44,16 +44,14 @@ public class OrderQueryDTO {
 				if(StringUtils.isNoneBlank(orderQueryDTO.getName())) {
 					predicate.add(criteriaBuilder.like(root.get("name").as(String.class),"%" + orderQueryDTO.getName() + "%"));
 				}
-				if(StringUtils.isNotBlank(orderQueryDTO.getCompany().getCompanyName())) {
-					predicate.add(criteriaBuilder.like(root.get("company").get("companyName"),"%"+orderQueryDTO.getCompany().getCompanyName()+"%"));
+				if(StringUtils.isNotBlank(orderQueryDTO.getCompanyName())) {
+					System.out.println("yes");
+					Root<Company> root1 = null;
+					predicate.add(criteriaBuilder.like(root1.get("companyName").as(String.class),"%"+orderQueryDTO.getCompanyName()+"%"));
+					/*Join<Order,Company> join=root.join("company",JoinType.LEFT);
+					predicate.add(criteriaBuilder.like(join.get("companyName").as(String.class),"%"+orderQueryDTO.getCompanyName()+"%"));*/
 				}
-				/*if(null!=orderQueryDTO.getCompanyName()) {
-					Join<Order,Company> join=root.join("company",JoinType.LEFT);
-					predicate.add(criteriaBuilder.like(join.get("companyName").as(String.class),"%"+orderQueryDTO.getCompanyName()+"%"));
-					//predicate.add(criteriaBuilder.like(root.get("company").get("companyName").as(String.class),"%" + orderQueryDTO.getCompanyName() + "%"));
-					
-				}*/
-				
+						
 				Predicate[] pre = new Predicate[predicate.size()];
 				return query.where(predicate.toArray(pre)).getRestriction();
 			}
