@@ -33,7 +33,7 @@ public class ApplicationTests
 	@Test
 	public void helloProcessInstance() {
 		//根据bpmn文件部署流程,可以思考是否需要多次部署？查看数据库表：act_re_procdef
-		Deployment deployment = repositoryService.createDeployment().addClasspathResource("processes/LeaveProcess.bpmn").deploy();
+		Deployment deployment = repositoryService.createDeployment().addClasspathResource("processes/email.bpmn").deploy();
 		System.out.println("创建流程部署，部署Id："+deployment.getId());
 		//获取流程定义 
 		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).singleResult();
@@ -49,9 +49,9 @@ public class ApplicationTests
 		System.out.println("》》》》》》》》》》第一次执行前，任务名称："+task.getName());
 		taskService.complete(task.getId());
  
-		task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
+		/*task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
 		System.out.println("》》》》》》》》》》》》》》》》》》》》第二次执行前，任务名称："+task.getName());
-		taskService.complete(task.getId());
+		taskService.complete(task.getId());*/
  
 		task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
 		System.out.println("》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》任务执行完毕,task为："+task);

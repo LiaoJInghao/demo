@@ -159,9 +159,10 @@ public class LeaveService implements ILeaveService {
 	public void complete(String taskId, Map<String, Object> variables) {
 		
 		//流程变量的处理
-		if(variables.containsKey("realityStartTime")) {
-			depreason=null;
-			hrreason=null;
+		if(variables.containsKey("confirmName")) {
+			System.out.println("yes");
+			/*depreason=null;
+			hrreason=null;*/
 		}
 		if(variables.containsKey("deptLeaderPass")&&(boolean) variables.get("deptLeaderPass")) {
 			depreason="同意";
