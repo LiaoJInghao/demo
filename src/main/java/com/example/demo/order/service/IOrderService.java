@@ -1,6 +1,6 @@
 package com.example.demo.order.service;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,13 +10,15 @@ import com.example.demo.order.entity.Order;
 import com.example.demo.order.entity.OrderDTO;
 
 public interface IOrderService {
+	//请假业务
 	public void save(Order order);
 	public void delete(Long id);
 	public void deleteAll(Long[] ids);
-	public Optional<Order> findOne(Long id);
+	public Order findOne(Long id);
 	
-	public Page<OrderDTO> findAll(Specification<Order> spec, Pageable pageable);
+	public Page<Order> findAll(Specification<Order> spec, Pageable pageable);
 	
-	public Page<OrderDTO> findOrderByCompanyName(String companyName, Pageable pageable);
+	public Page<OrderDTO> findByOrderName(Specification<Order> spec, Pageable pageable);
 
+	public List<Order> findByCompanyId(Long companyId);
 }

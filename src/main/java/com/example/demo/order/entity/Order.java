@@ -14,8 +14,10 @@ import com.example.demo.company.entity.Company;
 @Entity
 @Table(name="t_order")
 public class Order {
+	
 	private Long id;
-	private String name;
+	private String orderName;
+	
 	private Company company;
 	
 	@Id
@@ -23,9 +25,10 @@ public class Order {
 	public Long getId() {
 		return id;
 	}
-	public String getName() {
-		return name;
+	public String getOrderName() {
+		return orderName;
 	}
+	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="company_id")
 	public Company getCompany() {
@@ -34,15 +37,11 @@ public class Order {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setOrderName(String orderName) {
+		this.orderName = orderName;
 	}
 	public void setCompany(Company company) {
 		this.company = company;
-	}
-	@Override
-	public String toString() {
-		return "Order [id=" + id + ", name=" + name + ", company=" + company + "]";
 	}
 	
 }

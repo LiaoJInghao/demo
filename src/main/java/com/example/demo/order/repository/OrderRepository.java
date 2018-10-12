@@ -1,7 +1,7 @@
 package com.example.demo.order.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -12,7 +12,6 @@ import com.example.demo.order.entity.Order;
 @Repository
 public interface OrderRepository extends PagingAndSortingRepository<Order, Long>,JpaSpecificationExecutor<Order>{
 	
-	@Query("from Order o where o.company.companyName =?1")
-	public Page<Order> findOrderByCompanyName(String companyName, Pageable pageable);
-
+	@Query("from Order o where o.company.id=?1")
+	public List<Order> findByCompanyId(Long companyId);
 }

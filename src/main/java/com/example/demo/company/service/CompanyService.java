@@ -3,7 +3,6 @@ package com.example.demo.company.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +16,7 @@ import com.example.demo.company.repository.CompanyRepository;
 
 @Service
 @Transactional
-public class CompanyService implements ICompanyServie {
+public class CompanyService implements ICompanyService {
 	
 	@Autowired
 	private CompanyRepository companyRepository;
@@ -34,17 +33,17 @@ public class CompanyService implements ICompanyServie {
 
 	@Override
 	public void deleteAll(Long[] ids) {
-        List<Long> idLists = new ArrayList<Long>(Arrays.asList(ids));
+		List<Long> idLists = new ArrayList<Long>(Arrays.asList(ids));
 		
-		List<Company> companys = (List<Company>) companyRepository.findAllById(idLists);
-		if(companys!=null) {
-			companyRepository.deleteAll(companys);
+		List<Company> orders = (List<Company>) companyRepository.findAllById(idLists);
+		if(orders!=null) {
+			companyRepository.deleteAll(orders);
 		}
 	}
 
 	@Override
-	public Optional<Company> findOne(Long id) {
-		return companyRepository.findById(id);
+	public Company findOne(Long id) {
+		return companyRepository.findById(id).get();
 	}
 
 	@Override

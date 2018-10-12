@@ -101,9 +101,11 @@ public class LeaveController
     public Page<Leave> findLeaveByUserId(LeaveQueryDTO leaveQueryDTO,HttpSession session,ExtjsPageRequest pageable) 
 	{
 		Page<Leave> page;
-		String userId = SessionUtil.getUserName(session);
+		//String userId = SessionUtil.getUserName(session);
+		String userId ="admin";
 		if(userId!=null) {
-			leaveQueryDTO.setUserId(SessionUtil.getUserName(session));
+			//leaveQueryDTO.setUserId(SessionUtil.getUserName(session));
+			leaveQueryDTO.setUserId(userId);
 			page = leaveService.findAll(LeaveQueryDTO.getWhereClause(leaveQueryDTO), pageable.getPageable());
 		}else {
 			page = new PageImpl<Leave>(new ArrayList<Leave>(),pageable.getPageable(),0);

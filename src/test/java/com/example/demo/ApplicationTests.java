@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.List;
+
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -14,6 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.demo.company.entity.Company;
+import com.example.demo.company.service.CompanyService;
+import com.example.demo.order.entity.Order;
+import com.example.demo.order.service.OrderService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -29,6 +37,12 @@ public class ApplicationTests
 	
 	@Autowired  
 	private IdentityService identityService; 
+	
+	@Autowired
+	private OrderService orderService;
+	
+	@Autowired
+	private CompanyService companyService;
 
 	@Test
 	public void helloProcessInstance() {
@@ -56,5 +70,53 @@ public class ApplicationTests
 		task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
 		System.out.println("》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》任务执行完毕,task为："+task);
 	}
+	
+	@Test
+	public void save() {
+		Company c=new Company();
+		c.setCompanyAddress("GZ");
+		c.setCompanyName("KC");
+		companyService.save(c);
+		
+		Company c1=new Company();
+		c1.setCompanyAddress("GZ");
+		c1.setCompanyName("KCA");
+		companyService.save(c1);
+		
+		Order o=new Order();
+		o.setOrderName("admina");
+		o.setCompany(c);
+		orderService.save(o);
+		
+		Order o1=new Order();
+		o1.setOrderName("adminb");
+		o1.setCompany(c1);
+		orderService.save(o1);
+	}
+	
+	@Test
+	public void deleteByOrder() {
+		Order o=orderService.findOne(1L);
+		if(o!=null) {
+			o.setOrderName("aaa");
+			orderService.save(o);
+		}
+	}
+	
+	
+	@Test
+	public void deleteByCompany() {
+		Company c=companyService.findOne(12L);
+		if(c!=null) {
+			List<Order> orderList=orderService.findByCompanyId(c.getId());
+			for(Order o:orderList) {
+				o.setCompany(null);
+				orderService.save(o);
+				orderService.delete(o.getId());
+			}
+			companyService.delete(c.getId());
+		}
+	}
+	
 	
 }

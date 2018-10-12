@@ -3,8 +3,8 @@ package com.example.demo.order.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,7 +19,8 @@ import com.example.demo.order.repository.OrderRepository;
 
 @Service
 @Transactional
-public class OrderService implements IOrderService {
+public class OrderService implements IOrderService{
+	
 	@Autowired
 	private OrderRepository orderRepository;
 
@@ -44,34 +45,33 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public Optional<Order> findOne(Long id) {
-		return orderRepository.findById(id);
+	public Order findOne(Long id) {
+		return orderRepository.findById(id).get();
 	}
 
 	@Override
-	public Page<OrderDTO> findAll(Specification<Order> spec, Pageable pageable) {
-		
-		Page<Order> list = orderRepository.findAll(pageable);
-		List<OrderDTO> dtoLists = new ArrayList<OrderDTO>();
-		for (Order entity : list.getContent()) {
-			OrderDTO dto = new OrderDTO();
-			OrderDTO.entityToDto(entity, dto);
-			dtoLists.add(dto);
-		}
-		return new PageImpl<OrderDTO>(dtoLists, pageable, list.getTotalElements());
-		
+	public Page<Order> findAll(Specification<Order> spec, Pageable pageable) {
+		return orderRepository.findAll(spec, pageable);
 	}
 
 	@Override
-	public Page<OrderDTO> findOrderByCompanyName(String companyName, Pageable pageable) {
-		Page<Order> list = orderRepository.findOrderByCompanyName(companyName, pageable);
+	public Page<OrderDTO> findByOrderName(Specification<Order> spec, Pageable pageable) {
+		Page<Order> list =  orderRepository.findAll(spec, pageable);
 		List<OrderDTO> dtoLists = new ArrayList<OrderDTO>();
 		for (Order entity : list.getContent()) {
 			OrderDTO dto = new OrderDTO();
-			OrderDTO.entityToDto(entity, dto);
+			BeanUtils.copyProperties(entity, dto);
+			if(entity.getCompany()!=null) {
+				dto.setCompanyName(entity.getCompany().getCompanyName());
+			}
 			dtoLists.add(dto);
 		}
 		return new PageImpl<OrderDTO>(dtoLists, pageable, list.getTotalElements());
+	}
+
+	@Override
+	public List<Order> findByCompanyId(Long companyId) {
+		return orderRepository.findByCompanyId(companyId);
 	}
 
 }
