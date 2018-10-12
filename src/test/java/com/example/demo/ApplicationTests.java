@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.company.entity.Company;
 import com.example.demo.company.service.CompanyService;
+import com.example.demo.factory.entity.Factory;
+import com.example.demo.factory.service.FactoryService;
 import com.example.demo.order.entity.Order;
 import com.example.demo.order.service.OrderService;
 
@@ -43,6 +45,9 @@ public class ApplicationTests
 	
 	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	private FactoryService factoryService;
 
 	@Test
 	public void helloProcessInstance() {
@@ -72,15 +77,27 @@ public class ApplicationTests
 	}
 	
 	@Test
+	@Transactional
 	public void save() {
+		
+		Factory f=new Factory();
+		f.setFactoryName("DGF1");
+		factoryService.save(f);
+		
+		Factory f2=new Factory();
+		f2.setFactoryName("DGF2");
+		factoryService.save(f2);
+		
 		Company c=new Company();
 		c.setCompanyAddress("GZ");
 		c.setCompanyName("KC");
+		c.setFactory(f);
 		companyService.save(c);
 		
 		Company c1=new Company();
 		c1.setCompanyAddress("GZ");
 		c1.setCompanyName("KCA");
+		c.setFactory(f);
 		companyService.save(c1);
 		
 		Order o=new Order();
@@ -90,7 +107,7 @@ public class ApplicationTests
 		
 		Order o1=new Order();
 		o1.setOrderName("adminb");
-		o1.setCompany(c1);
+		o1.setCompany(c);
 		orderService.save(o1);
 	}
 	
@@ -106,7 +123,7 @@ public class ApplicationTests
 	
 	@Test
 	public void deleteByCompany() {
-		Company c=companyService.findOne(12L);
+		Company c=companyService.findOne(1L);
 		if(c!=null) {
 			List<Order> orderList=orderService.findByCompanyId(c.getId());
 			for(Order o:orderList) {

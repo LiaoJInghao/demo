@@ -4,6 +4,7 @@ public class OrderDTO {
 	
 	private String orderName;
 	private String companyName;
+	private String factoryName;
 
 	public String getOrderName() {
 		return orderName;
@@ -19,6 +20,14 @@ public class OrderDTO {
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+
+	public String getFactoryName() {
+		return factoryName;
+	}
+
+	public void setFactoryName(String factoryName) {
+		this.factoryName = factoryName;
 	}
 	
 }

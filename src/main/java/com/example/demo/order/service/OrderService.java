@@ -63,6 +63,7 @@ public class OrderService implements IOrderService{
 			BeanUtils.copyProperties(entity, dto);
 			if(entity.getCompany()!=null) {
 				dto.setCompanyName(entity.getCompany().getCompanyName());
+				dto.setFactoryName(entity.getCompany().getFactory().getFactoryName());
 			}
 			dtoLists.add(dto);
 		}

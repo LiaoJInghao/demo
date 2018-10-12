@@ -14,6 +14,7 @@ public class OrderQueryDTO {
 	
 	private String orderName;
 	private String companyName;
+	private String factoryName;
 
 	public String getOrderName() {
 		return orderName;
@@ -31,6 +32,15 @@ public class OrderQueryDTO {
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+	
+	
+	public String getFactoryName() {
+		return factoryName;
+	}
+
+	public void setFactoryName(String factoryName) {
+		this.factoryName = factoryName;
 	}
 
 	@SuppressWarnings({ "serial"})
@@ -51,6 +61,10 @@ public class OrderQueryDTO {
 							orderQueryDTO.getCompanyName()));
 				}
 				
+				if (null!=orderQueryDTO.getFactoryName()) {
+					predicate.add(criteriaBuilder.equal(root.get("company").get("factory").get("factoryName").as(String.class),
+							orderQueryDTO.getFactoryName()));
+				}
 				
 				Predicate[] pre = new Predicate[predicate.size()];
 				return query.where(predicate.toArray(pre)).getRestriction();

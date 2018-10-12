@@ -10,7 +10,7 @@ import com.example.demo.order.entity.Order;
 import com.example.demo.order.entity.OrderDTO;
 
 public interface IOrderService {
-	//请假业务
+	
 	public void save(Order order);
 	public void delete(Long id);
 	public void deleteAll(Long[] ids);

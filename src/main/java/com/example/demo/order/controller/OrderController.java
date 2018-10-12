@@ -22,8 +22,9 @@ public class OrderController {
 	
 	@GetMapping
 	public Page<OrderDTO> find(OrderQueryDTO orderQueryDTO,ExtjsPageRequest pageable) {
-		orderQueryDTO.setOrderName("admin3");
+		//orderQueryDTO.setOrderName("admin3");
 		//orderQueryDTO.setCompanyName("KDF4");
+		orderQueryDTO.setFactoryName("DGF1");
 		return orderService.findByOrderName(OrderQueryDTO.getWhereClause(orderQueryDTO), pageable.getPageable());
 	}
 	
